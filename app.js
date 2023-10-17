@@ -1,5 +1,6 @@
 const express = require("express");
 const ExpressError = require("./expressError");
+const { getMean, getMedian, getMode } = require("./helpers");
 
 const app = express();
 const PORT = 3000;
@@ -30,9 +31,7 @@ app.use((req, res, next) => {
 
 app.get("/mean", (req, res, next) => {
   const nums = req.nums;
-  const mean =
-    nums.reduce((accumulator, currNum) => currNum + accumulator, 0) /
-    nums.length;
+  const mean = getMean(nums);
 
   return res.status(200).json({
     response: {
@@ -44,7 +43,7 @@ app.get("/mean", (req, res, next) => {
 
 app.get("/median", (req, res, next) => {
   const nums = req.nums;
-  const median = nums[Math.floor(nums.length / 2)];
+  const median = getMedian(nums);
 
   return res.status(200).json({
     response: {
@@ -56,25 +55,7 @@ app.get("/median", (req, res, next) => {
 
 app.get("/mode", (req, res, next) => {
   const nums = req.nums;
-  const numCount = {};
-
-  nums.forEach((num) => {
-    if (numCount.hasOwnProperty(num)) {
-      numCount[num] = numCount[num] + 1;
-    } else {
-      numCount[num] = 1;
-    }
-  });
-
-  let max = 0;
-  let mode = 0;
-
-  for (let num in numCount) {
-    if (numCount[num] > max) {
-      max = numCount[num];
-      mode = num;
-    }
-  }
+  const mode = getMode(nums);
 
   return res.status(200).json({
     response: {
