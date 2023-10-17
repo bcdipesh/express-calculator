@@ -29,7 +29,7 @@ const getMode = (arr) => {
     }
   }
 
-  return mode;
+  return +mode;
 };
 
 module.exports = {
